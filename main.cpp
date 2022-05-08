@@ -237,9 +237,14 @@ int main() {
         vkQueuePresentKHR(device->graphicsQueues[0], &presentInfo);
         currentFrame = (currentFrame + 1) % swapchain->imageCount;
 
-        const uint32_t fps = 150;
-        const auto end = std::chrono::high_resolution_clock::now();
-        std::this_thread::sleep_for(std::chrono::microseconds(1000000/fps)-(end-begin));
+        const uint32_t fps = 145;
+        auto end = std::chrono::high_resolution_clock::now();
+
+        auto counter =  (end-begin);
+        while (counter < std::chrono::microseconds(1000000/fps)) {
+            end = std::chrono::high_resolution_clock::now();
+            counter = (end - begin);
+        }
     }
 
     device->wait();
