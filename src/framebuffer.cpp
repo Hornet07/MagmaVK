@@ -19,8 +19,3 @@ Framebuffer_T::Framebuffer_T(VkDevice device, VkRenderPass renderPass, Framebuff
 Framebuffer_T::~Framebuffer_T() {
     vkDestroyFramebuffer(device, framebuffer, nullptr);
 }
-
-Framebuffer Vulkan::createFramebuffer(Device device, RenderPass renderPass, FramebufferCreateInfo framebufferCreateInfo) {
-    framebuffers.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, renderPass->renderPass, framebufferCreateInfo, idCounter));
-    return &framebuffers.at(idCounter++);
-}

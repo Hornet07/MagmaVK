@@ -12,11 +12,6 @@ Semaphore_T::~Semaphore_T() {
     vkDestroySemaphore(device, semaphore, nullptr);
 }
 
-Semaphore Vulkan::createSemaphore(Device device) {
-    semaphores.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, idCounter));
-    return &semaphores.at(idCounter++);
-}
-
 //Synchronization: fences
 Fence_T::Fence_T(VkDevice device, bool signaled, size_t id) : device(device), id(id) {
     VkFenceCreateInfo fenceCreateInfo{};
@@ -28,12 +23,6 @@ Fence_T::Fence_T(VkDevice device, bool signaled, size_t id) : device(device), id
 
 Fence_T::~Fence_T() {
     vkDestroyFence(device, fence, nullptr);
-}
-
-Fence Vulkan::createFence(Device device, bool signaled) {
-    fences.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter),
-                   std::forward_as_tuple(device->device, signaled, idCounter));
-    return &fences.at(idCounter++);
 }
 
 void Fence_T::wait(uint64_t timeout) {

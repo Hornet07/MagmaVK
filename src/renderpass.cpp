@@ -104,8 +104,3 @@ RenderPass_T::RenderPass_T(VkDevice device, std::vector<AttachmentDescription>& 
 RenderPass_T::~RenderPass_T() {
     vkDestroyRenderPass(device, renderPass, nullptr);
 }
-
-RenderPass Vulkan::createRenderPass(Device device, std::vector<AttachmentDescription>& attachments, std::vector<SubpassDescription>& subpasses, std::vector<SubpassDependency>& dependencies) {
-    renderPasses.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, attachments, subpasses, dependencies, idCounter));
-    return &renderPasses.at(idCounter++);
-}

@@ -78,8 +78,3 @@ void Swapchain_T::resize(VkExtent2D extent) {
 
 //TODO Implement
 void Swapchain_T::recreate(SwapchainCreateInfo swapchainCreateInfo) {}
-
-Swapchain Vulkan::createSwapchain(Device device, VkSurfaceKHR surface, SwapchainCreateInfo swapchainCreateInfo) {
-    swapchains.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, surface, swapchainCreateInfo, idCounter));
-    return &swapchains.at(idCounter++);
-}

@@ -15,11 +15,6 @@ CommandPool_T::~CommandPool_T() {
     vkDestroyCommandPool(device, commandPool, nullptr);
 }
 
-CommandPool Vulkan::createCommandPool(Device device, uint32_t queueFamilyIndex, VkCommandPoolCreateFlags flags) {
-    commandPools.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, flags, queueFamilyIndex, idCounter));
-    return &commandPools.at(idCounter++);
-}
-
 //Commands: command buffers
 VkCommandBuffer CommandPool_T::allocateCommandBuffer(VkCommandBufferLevel level) {
     VkCommandBuffer commandBuffer;

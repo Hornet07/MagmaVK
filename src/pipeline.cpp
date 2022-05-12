@@ -72,12 +72,6 @@ GraphicsPipeline_T::~GraphicsPipeline_T() {
 //TODO Implement
 void GraphicsPipeline_T::recreate(GraphicsPipelineCreateInfo graphicsPipelineCreateInfo) {}
 
-GraphicsPipeline
-Vulkan::createGraphicsPipeline(Device device, PipelineLayout pipelineLayout, RenderPass renderPass, uint32_t subpass, GraphicsPipelineCreateInfo graphicsPipelineCreateInfo) {
-    graphicsPipelines.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, pipelineLayout->pipelineLayout, renderPass->renderPass, subpass, graphicsPipelineCreateInfo, idCounter));
-    return &graphicsPipelines.at(idCounter++);
-}
-
 //Pipeline: compute pipelines
 //TODO
 

@@ -4,7 +4,7 @@
 Vulkan::Vulkan(const char* const* instanceExtensions, uint32_t instanceExtensionCount) {
     VkApplicationInfo applicationInfo{};
     applicationInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-    applicationInfo.apiVersion = VK_API_VERSION_1_0;//3;
+    applicationInfo.apiVersion = VK_API_VERSION_1_3;
     applicationInfo.pEngineName = "Magma Engine";
     applicationInfo.engineVersion = VK_MAKE_VERSION(0, 0, 1);
     applicationInfo.pApplicationName = "Magma Tests";
@@ -44,4 +44,52 @@ Vulkan::~Vulkan() {
     devices.clear();
     physicalDevices.clear();
     vkDestroyInstance(instance, nullptr);
+}
+
+std::vector<PhysicalDevice> Vulkan::getPhysicalDevices() {
+    std::vector<PhysicalDevice> list;
+    for (auto& physicalDevice: physicalDevices)
+        list.push_back(&physicalDevice);
+    return list;
+}
+
+Device Vulkan::createDevice(PhysicalDevice physicalDevice, DeviceCreateInfo deviceCreateInfo) {
+    devices.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(physicalDevice, deviceCreateInfo, idCounter));
+    return &devices.at(idCounter++);
+}
+
+Swapchain Vulkan::createSwapchain(Device device, VkSurfaceKHR surface, SwapchainCreateInfo swapchainCreateInfo) {
+    swapchains.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, surface, swapchainCreateInfo, idCounter));
+    return &swapchains.at(idCounter++);
+}
+
+RenderPass Vulkan::createRenderPass(Device device, std::vector<AttachmentDescription>& attachments, std::vector<SubpassDescription>& subpasses, std::vector<SubpassDependency>& dependencies) {
+    renderPasses.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, attachments, subpasses, dependencies, idCounter));
+    return &renderPasses.at(idCounter++);
+}
+
+Framebuffer Vulkan::createFramebuffer(Device device, RenderPass renderPass, FramebufferCreateInfo framebufferCreateInfo) {
+    framebuffers.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, renderPass->renderPass, framebufferCreateInfo, idCounter));
+    return &framebuffers.at(idCounter++);
+}
+
+GraphicsPipeline Vulkan::createGraphicsPipeline(Device device, PipelineLayout pipelineLayout, RenderPass renderPass, uint32_t subpass, GraphicsPipelineCreateInfo graphicsPipelineCreateInfo) {
+    graphicsPipelines.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, pipelineLayout->pipelineLayout, renderPass->renderPass, subpass, graphicsPipelineCreateInfo, idCounter));
+    return &graphicsPipelines.at(idCounter++);
+}
+
+CommandPool Vulkan::createCommandPool(Device device, uint32_t queueFamilyIndex, VkCommandPoolCreateFlags flags) {
+    commandPools.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, flags, queueFamilyIndex, idCounter));
+    return &commandPools.at(idCounter++);
+}
+
+Semaphore Vulkan::createSemaphore(Device device) {
+    semaphores.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter), std::forward_as_tuple(device->device, idCounter));
+    return &semaphores.at(idCounter++);
+}
+
+Fence Vulkan::createFence(Device device, bool signaled) {
+    fences.emplace(std::piecewise_construct, std::forward_as_tuple(idCounter),
+                   std::forward_as_tuple(device->device, signaled, idCounter));
+    return &fences.at(idCounter++);
 }

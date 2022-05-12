@@ -5,6 +5,9 @@
 
 //Debugging
 #include <iostream>
+#ifdef WIN32
+#define GLFW_DLL
+#endif
 
 int main() {
     glfwInit();
@@ -15,8 +18,8 @@ int main() {
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     //glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
     GLFWwindow* window = glfwCreateWindow(800, 600, "MagmaVK", nullptr, nullptr);
-    glfwSetWindowOpacity(window, 0.9f);
-    glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
+    //glfwSetWindowOpacity(window, 0.9f);
+    //glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
 
     //Create instance
     uint32_t glfwExtensionCount = 0;
